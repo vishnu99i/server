@@ -8,6 +8,8 @@ const cookieParser = require("cookie-parser");
 //Accessing Cookies => req.cookies
 //Signed Cookies(have security key) => req.singnedCookies
 const cors = require("cors");
+// const dotenv = require("dotenv");
+// dotenv.config({path:"./.env"});
 
 const authRouter = require("./routes/auth/auth-routes");
 const adminProductsRouter = require("./routes/admin/products-routes");
@@ -30,6 +32,11 @@ const commonFeatureRouter = require("./routes/common/feature-routes");
 //   .then(() => console.log("MongoDB connected"))
 //   .catch((error) => console.log(error));
   
+// const MONGODB_URI = process.env.MONGODB_URI;
+// mongoose.connect(MONGODB_URI)
+//   .then(() => console.log("MongoDB connected"))
+//   .catch((error) => console.log(error));
+
 
 mongoose
   .connect("mongodb+srv://vinventor1999:passwordmernproject123@cluster0.qmugk.mongodb.net/")
@@ -41,22 +48,24 @@ mongoose
   // mongodb+srv://vinventor1999:passwordmernproject123@cluster0.qmugk.mongodb.net/
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 5000;
 
-app.use(
-  cors({
-    origin: "https://client-app-one-omega.vercel.app",
-    methods: ["GET", "POST", "DELETE", "PUT"],
-    allowedHeaders: [
-      "Content-Type", //Type of content sent in request body
-      "Authorization", //Used to sent authentication tokens
-      "Cache-Control", //Helps control how responses are cached on the client side and Cache is a place where frequently used information is temporarily stored so it can be quickly accessed later
-      "Expires", //This header specifies an expiration date for the cached resource
-      "Pragma", //Similar to Cache-Control, but mainly for backward compatibility with older HTTP/1.0 caches
-    ],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "https://client-app-one-omega.vercel.app",
+//     methods: ["GET", "POST", "DELETE", "PUT"],
+//     allowedHeaders: [
+//       "Content-Type", //Type of content sent in request body
+//       "Authorization", //Used to sent authentication tokens
+//       "Cache-Control", //Helps control how responses are cached on the client side and Cache is a place where frequently used information is temporarily stored so it can be quickly accessed later
+//       "Expires", //This header specifies an expiration date for the cached resource
+//       "Pragma", //Similar to Cache-Control, but mainly for backward compatibility with older HTTP/1.0 caches
+//     ],
+//     credentials: true,
+//   })
+// );
+
+app.use(cors());
 
 app.use(cookieParser());
 app.use(express.json()); //Incoming JSON data from requests to Javascript Object
@@ -74,4 +83,8 @@ app.use("/api/shop/review", shopReviewRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
 
-app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
+// app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));
+
+export default app
+
+// module.exports = app; // Instead of app.listen()
