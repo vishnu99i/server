@@ -67,8 +67,9 @@ const loginUser = async (req, res) => {
       "CLIENT_SECRET_KEY",
       { expiresIn: "60m" }
     );
-
-    res.cookie("token", token, { httpOnly: true, secure: false }).json({
+// res.json({token})
+    //httpOnly: true, secure: false
+    res.cookie("token", token, { httpOnly: true, secure: true,SameSite: 'Lax',maxAge: 60 * 60 * 1000 }).json({
       success: true,
       message: "Logged in successfully",
       user: {
@@ -77,6 +78,7 @@ const loginUser = async (req, res) => {
         id: checkUser._id,
         userName: checkUser.userName,
       },
+      token
     });
   } catch (e) {
     console.log(e);
